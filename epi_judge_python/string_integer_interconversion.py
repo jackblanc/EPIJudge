@@ -1,15 +1,31 @@
+import functools
+import string
+
 from test_framework import generic_test
 from test_framework.test_failure import TestFailure
 
 
 def int_to_string(x: int) -> str:
-    # TODO - you fill in here.
-    return '0'
+    is_negative = False
+    if x < 0:
+        x, is_negative = -x, True
+
+    s = []
+    while True:
+        s.append(chr(ord('0') + x % 10))
+        x //= 10
+        if x == 0:
+            break
+
+    return ('-' if is_negative else '') + ''.join(reversed(s))
 
 
 def string_to_int(s: str) -> int:
-    # TODO - you fill in here.
-    return 0
+    return (-1 if s[0] == '-' else 1) * functools.reduce(
+        lambda running_sum, c: running_sum * 10 + string.digits.index(c),
+        s[s[0] in '-+':], 0)
+
+
 
 
 def wrapper(x, s):
